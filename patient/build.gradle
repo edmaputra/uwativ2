@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.2.2.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'maven-publish'
+	id 'com.bmuschko.docker-java-application' version '6.1.1'
 }
 
 group = 'io.github.edmaputra.uwati'
@@ -9,6 +11,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 }
 
@@ -16,14 +19,30 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.flywaydb:flyway-core'
+//	implementation 'org.flywaydb:flyway-core'
+	implementation 'io.github.edmaputra:edtmplte:0.0.5-SNAPSHOT'
+
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 }
 
+jar {
+	manifest {
+		attributes 'Main-Class': 'io.github.edmaputra.uwati.patient.PatientApplication'
+	}
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 test {
 	useJUnitPlatform()
+}
+
+docker {
+	javaApplication {
+		maintainer = 'Bangun Edma Saputra "bangun.saputra@xtremax.com"'
+	}
 }
