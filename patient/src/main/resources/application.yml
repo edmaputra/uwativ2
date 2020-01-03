@@ -1,3 +1,10 @@
-spring:
-  profiles:
-    active: dev
+#spring:
+#  profiles:
+#    active: de
+server:
+  port: 14001
+logging:
+  level:
+    io:
+      github:
+        edmaputra: DEBUG
