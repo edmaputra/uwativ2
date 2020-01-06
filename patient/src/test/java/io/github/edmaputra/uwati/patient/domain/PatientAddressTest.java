@@ -27,7 +27,8 @@ class PatientAddressTest {
                 MaritalStatus.MARRIED,
                 "Kota Bangun",
                 LocalDate.of(1990, Month.JULY, 8),
-                "085348481919"
+                "085348481919",
+                "abc@test.com"
         );
 
         p2 = new Patient(
@@ -38,7 +39,8 @@ class PatientAddressTest {
                 MaritalStatus.MARRIED,
                 "Cicaheum",
                 LocalDate.of(1990, Month.JULY, 8),
-                "085348481919"
+                "085348481919",
+                "abc@test.com"
         );
 
         address1 = new Address(
@@ -73,23 +75,6 @@ class PatientAddressTest {
 
         assertThat(p1.getAddresses().size()).isEqualTo(2);
         assertThat(p1.getAddresses()).contains(address1, address2);
-    }
-
-    @Test
-    public void whenPatientIsAddedToAddress_shouldReturnCorrectAddressAmount() {
-        assertThat(address1.getPatients().size()).isEqualTo(0);
-
-        address1.addPerson(p1);
-        address1.addPerson(p2);
-
-        assertThat(address1.getPatients().size()).isEqualTo(2);
-        assertThat(address1.getPatients()).contains(p1, p2);
-
-        // when try to add with same object, should have replace the old one.
-        address1.addPerson(p2);
-
-        assertThat(address1.getPatients().size()).isEqualTo(2);
-        assertThat(address1.getPatients()).contains(p1, p2);
     }
 
 }

@@ -1,6 +1,6 @@
 package io.github.edmaputra.uwati.patient.controller;
 
-import io.github.edmaputra.uwati.patient.domain.mongo.Patient;
+import io.github.edmaputra.uwati.patient.domain.Patient;
 import io.github.edmaputra.uwati.patient.repository.PatientRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

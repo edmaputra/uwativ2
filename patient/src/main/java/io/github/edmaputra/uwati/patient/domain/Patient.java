@@ -3,41 +3,19 @@ package io.github.edmaputra.uwati.patient.domain;
 import io.github.edmaputra.edtmplte.domain.Gender;
 import io.github.edmaputra.edtmplte.domain.MaritalStatus;
 import io.github.edmaputra.edtmplte.domain.Person;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "patient")
-public class Patient extends Person {
+@Document
+public class Patient extends Person<String> {
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(
-            name = "patient_address",
-            joinColumns = {@JoinColumn(name = "patient_id", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "address_id", nullable = false)}
-    )
     protected Set<Address> addresses = new HashSet<>();
 
-    @OneToMany(
-            mappedBy = "patient",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
     private Set<MedicalRecord> medicalRecords = new HashSet<>();
 
     public Patient() {
@@ -51,24 +29,42 @@ public class Patient extends Person {
             @NotNull(message = "Marital Status Cannot Null") MaritalStatus maritalStatus,
             @NotNull(message = "Birth Place Cannot Null") String birthPlace,
             @NotNull(message = "Birth Date Cannot Null") LocalDate birthDate,
-            @NotNull(message = "Phone Number Cannot Null") String phoneNumber
-            ) {
-        super(firstName, middleName, lastName, gender, maritalStatus, birthPlace, birthDate, phoneNumber);
-    }
-
-    public Set<MedicalRecord> getMedicalRecords() {
-        return medicalRecords;
-    }
-
-    public void addMedicalRecord(MedicalRecord medicalRecord) {
-        this.medicalRecords.add(medicalRecord);
+            @NotNull(message = "Phone Number Cannot Null") String phoneNumber,
+            String email
+    ) {
+        super(firstName, middleName, lastName, gender, maritalStatus, birthPlace, birthDate, phoneNumber, email);
     }
 
     public Set<Address> getAddresses() {
         return addresses;
     }
 
+    public Set<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+
     public void addAddress(Address address) {
         this.addresses.add(address);
+    }
+
+    public void addMedicalRecords(MedicalRecord medicalRecord) {
+        this.medicalRecords.add(medicalRecord);
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "addresses=" + addresses +
+                ", medicalRecords=" + medicalRecords +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender=" + gender +
+                ", maritalStatus=" + maritalStatus +
+                ", birthPlace='" + birthPlace + '\'' +
+                ", birthDate=" + birthDate +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

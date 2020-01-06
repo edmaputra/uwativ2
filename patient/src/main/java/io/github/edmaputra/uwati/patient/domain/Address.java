@@ -1,25 +1,11 @@
 package io.github.edmaputra.uwati.patient.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-@Table(name = "address")
-public class Address extends io.github.edmaputra.edtmplte.domain.Address {
-
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, mappedBy = "addresses")
-    protected Set<Patient> patients = new HashSet<>();
-
-    public Address() {
-    }
+@Document
+public class Address extends io.github.edmaputra.edtmplte.domain.Address<String> {
 
     public Address(
             @NotBlank(message = "Street Name Cannot Null or Empty") String street,
@@ -30,12 +16,14 @@ public class Address extends io.github.edmaputra.edtmplte.domain.Address {
         super(street, city, province, zipCode, country);
     }
 
-    public Set<Patient> getPatients() {
-        return patients;
+    @Override
+    public String toString() {
+        return "Address{" +
+                "street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", province='" + province + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
-
-    public void addPerson(Patient patient) {
-        this.patients.add(patient);
-    }
-
 }
